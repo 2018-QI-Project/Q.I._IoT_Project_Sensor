@@ -197,8 +197,8 @@ class SensorServer(Thread):
                 temp = ((MT * 0.004882814) - 0.5) * 5
                 # temp = (((MT * 3.3) / 1024) - 0.5) * 100
                 NO2 = ((NO2_WE - 287) - self.convert_temp('no2', temp) * (NO2_AE - 292)) /0.258
-                O3 = ((O3_WE - 418) - self.convert_temp('o3', temp) * (O3_AE - 404)) / 393
-                CO = ((CO_WE - 345) - self.convert_temp('co', temp) * (CO_AE - 315)) / 0.292
+                O3 = ((O3_WE - 418) - self.convert_temp('o3', temp) * (O3_AE - 404)) / 0.393
+                CO = ((CO_WE - 345) - self.convert_temp('co', temp) * (CO_AE - 315)) / 292
                 SO2 = ((SO2_WE - 333) - self.convert_temp('so2', temp) * (SO2_AE - 274)) / 0.288
                 mV = PM / 1000
                 hppcf = (240. * (mV ** 6)) - (2491.3 * (mV ** 5)) + (944.87 * (mV ** 4)) - (14840 * (mV ** 3)) + (10684 * (mV ** 2)) + (2211.8 * mV) + 7.9623
