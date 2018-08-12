@@ -38,8 +38,8 @@ class SensorServer(Thread):
                 sel.pinOUT()
 
         # initialize ADC library to read ADC value(s)
-        self.A0 = ADC(0) # alphasense, temperature sensor
-        self.A1 = ADC(1) # PM 2.5
+        self.A0 = ADC(0) # alphasense, PM 2.5
+        self.A1 = ADC(1) # temperature sensor
 
         # json format output        
         self.sensor_output = {
@@ -133,10 +133,10 @@ class SensorServer(Thread):
                 self.set_mux_channel(7)
                 SO2_AE = self.A0.get_mvolts()
 
-                MT = self.A0.get_mvolts()
+                MT = self.A1.get_mvolts()
 
-                self.set_mux_channel(9)
-                PM = self.A1.get_mvolts()
+                self.set_mux_channel(8)
+                PM = self.A0.get_mvolts()
 
                 # get the current time
                 current = int(time())
@@ -195,7 +195,7 @@ class SensorServer(Thread):
 
                 # calculate ppb or ug/m^3
                 temp = ((MT * 0.004882814) - 0.5) * 5
-                # temp = (((MT * 3.3) / 1024) - 0.5) * 100
+                #temp = (((MT * 3.3) / 1024) - 0.5) * 100
                 NO2 = ((NO2_WE - 287) - self.convert_temp('no2', temp) * (NO2_AE - 292)) /0.258
                 O3 = ((O3_WE - 418) - self.convert_temp('o3', temp) * (O3_AE - 404)) / 0.393
                 CO = ((CO_WE - 345) - self.convert_temp('co', temp) * (CO_AE - 315)) / 292
@@ -239,8 +239,8 @@ class SensorServer(Thread):
                 self.db_conn.commit()
 
                 # get the measured value from the table and shows it in one line 
-		#for row in self.db_cur.execute("SELECT * FROM history"):
-		#	pass
+		'''for row in self.db_cur.execute("SELECT * FROM history"):
+			pass'''
 		
                 # delete data stored for 24 hours
                 '''yesterdate = int(time()) - (24 * 60 * 60)
